@@ -1,0 +1,11 @@
+const valorSumado = require("./aExpo.js");
+
+console.log(`valor sumado: ${valorSumado.teSumo(300,85)}`);
+
+const valorMulti = require("./aExpo.js");
+
+console.log(`valor multiplicado: ${valorMulti.teMulti(4, 5)}`);
+
+const { teSumo2, teMulti2 } = require("./aExpo.js");
+
+console.log(`nueva suma ${teSumo2(568, 987)} y además nuevo multi ${teMulti2(1.56, 7.876)}`)
