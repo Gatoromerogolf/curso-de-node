@@ -1,4 +1,4 @@
-const curso = require("./curso.json");
+const curso = require("./200-curso.json");
 
 console.log(curso);
 

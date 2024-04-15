@@ -2,12 +2,12 @@ function saludar(nombre){
   return `Hola, ${nombre}`;
 }
 
-function otroSaludo(){
-  return `Este es otro saludo`
+function otroSaludo(pepe){
+  return `Este es otro saludo a ${pepe}`;
 }
 
 function saludarHolaMundo(){
-  return `Hola mundo`
+  return `Hola mundo`;
 }
 
 // console.log (otroSaludo())
