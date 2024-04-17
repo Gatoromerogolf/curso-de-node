@@ -75,6 +75,7 @@ const miPromesa2 = new Promise((resolve, reject) => {
       reject ("texto por rechazado")
     }
 })
+
 const funAprobada = (motivoAprob) => {
   console.log("la 2da se aprobó por " + motivoAprob + "\n\n")
 }
