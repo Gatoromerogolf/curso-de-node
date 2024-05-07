@@ -1,0 +1,11 @@
+###
+get http://localhost:3000/
+
+###
+put http://localhost:3000/
+
+###
+delete http://localhost:3000/ HTTP/1.1
+
+###
+POST http://localhost:3000/cursos/programacion HTTP/1.1

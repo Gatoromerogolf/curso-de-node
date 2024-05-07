@@ -9,7 +9,18 @@ const http = require('http');
 const servidor = http.createServer((req, res) =>{ // http es la variable que contiene el módulo http, createServer es el método y despues son los parámetros  req y res
     //proceso
     console.log('solicitud nueva', req.url);
-    res.end('Hola Mundo'); //end es método de res y devuelve lo que querramos una vez terminado el proceso
+    console.log('otro req', req.method);
+    console.log('otro mas ', req.headers)
+    res.setHeader('content-type', 'application/json')
+    res.end('Hola, Mundo -lll---'); //end es método de res y devuelve lo que querramos una vez terminado el proceso
+    console.log('respuesta', res.statusCode)
+
+
+    if (res.statusCode = 200){
+        console.log ('anduvo todo bien')};
+    
+    res.statusCode = 404;
+    console.log('respuesta cambiada', res.statusCode)
 })
 
 const puerto = 3000;
