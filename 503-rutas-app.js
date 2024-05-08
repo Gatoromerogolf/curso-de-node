@@ -38,6 +38,7 @@ function manejarSolicitudGET(req, res) {
   } // si pido solo cursos de programacion
   else if (path === "/cursos/programacion") {
     // res.write(JSON.stringify(cursos.infoCursos.programacion));
+
     const respuesta = {
       programacion: infoCursos.programacion, // así sale el texto "programacion"
     };
@@ -60,8 +61,32 @@ function manejarSolicitudPOST(req, res) {
 
     return res.end("Bienvenidos al servidor con API de node.js");
   } else if (path === "/cursos/programacion") {
-    // el path debe lleavarlo a programación
-    res.write("El servidor recibio solicitud de POST para programacion");
+    // el path debe llevarlo a programación
+
+    //  como se procesa un POST  con Node:
+    //  hay que definir una variable para recibir el cuerpo del post
+      let cuerpo = '';
+
+    //  se produce un evento y se indica que sucede cuando ocurre el evento de 
+    //   recibir información:
+    //   el evento viene predeterminado y se llama 'data'
+      req.on('data', contenido => {
+        cuerpo += contenido.toString();  // recibimos el cotenido y convertido a una cadena de caracteres, se lo guarda en cuerpo
+      });  
+
+      // luego hay otro evento que se produce cuando se termina de recibir la información:
+      req.on('end', () => {
+        console.log ("se recibió la información" + cuerpo)  
+        console.log (typeof cuerpo)
+
+        // se convierte el formato a objeto de javascript con JSON para poder manejar el contenido
+        cuerpo = JSON.parse(cuerpo);
+        console.log (cuerpo);
+        console.log(cuerpo.titulo);
+        res.end("El servidor recibio solicitud de POST para programacion y la proceso");
+      })
+
+    // res.write("El servidor recibio solicitud de POST para programacion");
     return res.end();
   } else {
     res.statusCode = 404;
@@ -73,5 +98,5 @@ const puerto = 3000;
 
 // el servidor escucha llamando al método listen.
 servidor.listen(puerto, () => {
-  console.log(`el servidor está escuchando en el puerto ${puerto}...`);
+  console.log(`el servidor está escuchando en el puerto ${puerto} y anda ..`);
 });
