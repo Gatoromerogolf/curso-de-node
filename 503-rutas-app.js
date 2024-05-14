@@ -44,10 +44,12 @@ function manejarSolicitudGET(req, res) {
   if (path == "/") {
     res.writeHead(200, { "Content-Type": "application/json" });
     return res.end("Bienvenidos al servidor con API de node.js");
-  } else if (path === "/cursos") {
+
+  } else if (path == "/cursos") {
     console.log("enviando info de cursos");
     res.write(JSON.stringify(infoCursos));
     return res.end();
+
   } // si pido solo cursos de programacion
   else if (path === "/cursos/programacion") {
     // res.end(JSON.stringify(infoCursos.programacion));
@@ -74,40 +76,45 @@ function manejarSolicitudPOST(req, res) {
   //si el camino es  /  (raiz) no pide nada, y se devuelve que llegó bien, con código 200
   if (path == "/") {
     return res.end("Bienvenidos al servidor con API de node.js");
-  } else if (path === "/cursos/programacion") {
-    // el path debe llevarlo a programación
+  } 
+    else if (path === "/cursos/programacion") {
 
-    //  como se procesa un POST  con Node:
-    //  hay que definir una variable para recibir el cuerpo del post
-    let cuerpo = "";
+      let cuerpo = ""; // es la variable para recibir el cuerpo del post
 
-    //  se produce un evento y se indica que sucede cuando ocurre el evento de
-    //   recibir información:
-    //   el evento viene predeterminado y se llama 'data'
-    req.on("data", (contenido) => {
-      cuerpo += contenido.toString(); // recibimos el cotenido y convertido a una cadena de caracteres, se lo guarda en cuerpo
-    });
+      req.on("data", contenido => { // se produce un evento:  req.on(data, ) es cuando se recibe la información en contenido
+        console.log(`se recibe en contenido con este valor ${contenido}`)
+        cuerpo += contenido.toString(); // se recibe contenido y se convierte a una cadena de caracteres agregandose los contenidos (+=)
+      })
 
-    // luego hay otro evento que se produce cuando se termina de recibir la información:
-    req.on("end", () => {
-      console.log("se recibió la información \n" + cuerpo);
-      console.log(typeof cuerpo);
+      // Manejo de errores
+      req.on("error", error => {  //  para indicar si hubo un error en la recepción
+        console.error("Error en la solicitud:", error);
+        res.statusCode = 500; // Error interno del servidor
+        res.end("Error interno del servidor");
+      });
 
-      // se convierte el formato a objeto de javascript con JSON para poder manejar el contenido
-      cuerpo = JSON.parse(cuerpo);
-      console.log(cuerpo);
-      console.log(cuerpo.titulo);
-      res.end(
-        "El servidor recibio solicitud de POST para programacion y la proceso"
-      );
-    });
+      req.on("end", () => {  // se produce este evento cuando se termino de recibir la informacio´n
+        console.log("se recibió la información: \n" + cuerpo);
+        console.log(`tipo de dato recibido en cuerpo: ${typeof cuerpo}`);
 
-    // res.write("El servidor recibio solicitud de POST para programacion");
-    return res.end();
-  } else {
-    res.statusCode = 404;
-    res.end("Esa dirección no existe");
-  }
+        try{// se convierte el formato a objeto de javascript con JSON para poder manejar el contenido
+          const curso = JSON.parse(cuerpo);
+          console.log("curso recibido")
+          console.log(curso)
+          console.log(`tipo de dato parseado: ${typeof curso}`)
+          console.log(curso[1].titulo);
+          res.end("El servidor recibio solicitud de POST para programacion y la proceso")
+        } catch (error){
+            console.error("Error al analizar el cuerpo de la solicitud:", error);
+            res.statusCode = 400; // Bad Request
+            res.end("Error al analizar el cuerpo de la solicitud");
+          };
+      });
+    }
+      else {
+        res.statusCode = 404;
+        res.end("Esa dirección no existe");
+      }
 }
 
 
@@ -115,20 +122,36 @@ function manejarSolicitudDELETE(req, res) {
   //obtiene el camino
   const path = req.url; // obtiene el camino
 
-  let cuerpo = ""; // define variable para recibir los datos del delete
-    //   el evento viene predeterminado y se llama 'data'
-  req.on("data", (contenido) => {
-      console.log (`contenido: ${contenido}`)
-      cuerpo = JSON.parse(contenido);
-      console.log (`cuerpo despues del json ${cuerpo}`)
-      cuerpo += contenido.toString(); // recibimos el cotenido y convertido a una cadena de caracteres, se lo guarda en cuerpo
-      console.log (`cuerpo despues de toString ${cuerpo}`);
-      console.log (`contenido a eliminar: ${cuerpo.id}`)
-    });
-
-    return;
+  if (path==="/"){
+    console.log ("recibió el delete")
+    return res.end("recibió solicitud de delete y termina")
   }
 
+  let cuerpo = ""; // define variable para recibir los datos del delete
+    //   el evento viene predeterminado y se llama 'data'
+  req.on("data", contenido => {
+      console.log (`contenido del delete: ${contenido}`);
+      cuerpo += contenido.toString();
+  });
+  
+  req.on("end", () => {
+    console.log("se recibió la información: \n" + cuerpo);
+    console.log(`tipo de dato recibido en cuerpo: ${typeof cuerpo}`);
+      try{// se convierte el formato a objeto de javascript con JSON para poder manejar el contenido
+        const curso = JSON.parse(cuerpo);
+        console.log("curso a eliminar")
+        console.log(curso)
+        console.log(`Se quiere eliominar el curso id:${curso.id} con el titulo${curso.titulo}`)
+        return res.end("El servidor recibio solicitud de delete y la proceso correctamente")
+      } catch (error){
+          console.error("Error al analizar el cuerpo de la solicitud:", error);
+          res.statusCode = 400; // Bad Request
+          return res.end("Error al analizar el cuerpo de la solicitud de delete...");
+        };
+  })
+}
+
+    // return;
 
 
 const puerto = 3000;
