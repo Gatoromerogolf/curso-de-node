@@ -104,6 +104,9 @@ app.get('/api/cursos/programacion/:lenguaje/:nivel', (req, res) => {
     return res.send(resultados);
 })
 
+
+
+
 // lectura con un parámetro  query  incluidos al final de la url con un ?  y tienen un para clave:valor
 //ejemplo:    '/api/cursos/programacion/javascript/basico?ordenar=vistas'
 
