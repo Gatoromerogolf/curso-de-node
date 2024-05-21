@@ -10,7 +10,7 @@ let infoCursos = {
     id: 2,
     titulo: 'Phyton intermedio',
     lenguaje: 'phyton',
-    vistas: 13553,
+    vistas: 135530000,
     nivel: 'intermedio'
 },{
     id: 3,
@@ -32,6 +32,18 @@ let infoCursos = {
     tema: 'algebra',
     vistas: 25434,
     nivel: 'basico'
+  },{
+    id: 3,
+    titulo: 'Aprende mas Algebra',
+    tema: 'algebra',
+    vistas: 254304,
+    nivel: 'medio'
+  },{
+    id: 4,
+    titulo: 'Aprende mas Algebra',
+    tema: 'algebra',
+    vistas: 2504,
+    nivel: 'avanzado'
   }
 ]}
 
