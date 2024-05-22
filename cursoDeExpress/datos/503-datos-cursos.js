@@ -18,6 +18,12 @@ let infoCursos = {
     lenguaje: 'javascript',
     vistas: 102455,
     nivel: 'basico'
+},{
+  id: 4,
+  titulo: 'Phyton advanced',
+  lenguaje: 'phyton',
+  vistas: 9999,
+  nivel: 'avanzado'
 }],
 'matematicas': [
   {

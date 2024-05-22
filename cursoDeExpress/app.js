@@ -3,14 +3,14 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-const { infoCursos } = require('../503-datos-cursos'); //com ono es un modulo ppal hay que darle el camino.  (express es principal y va solo)
+const { infoCursos } = require('../503-datos-cursos'); //como no es un modulo ppal hay que darle el camino.  (express es principal y va solo)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 // definición de rutas - routing - Método (get) y camino (/)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'MA-1.html'));
-  // res.send('se recibio un pedido de /');
+  // res.sendFile(path.join(__dirname, 'public', 'MA-1.html'));
+  res.send('se recibio un pedido de /');
 });
 
 //  puerto que se toma del environment que te da el hosting, sino el 3000
@@ -102,8 +102,17 @@ app.get('/api/cursos/programacion/:lenguaje/:nivel', (req, res) => {
     if (datos.length === 0) {
         return res.status(404).send(`no hay datos para el parámetro informado: ${lenguaje}`)}  // se envia la respuesta de error pero con codigo de estado
 
-    if (req.query.ordenar === 'vistas'){
-      return res.send(datos.sort((a, b) => a.vistas - b.vistas))
+    if (req.query.ordenar === 'vistas'){  //  pregunta si existe un parámetro query que tuvo que haber sido escrito como "clasificar" u "ordenar" o la palabra que uno quiere.  Lo que está despues del ===  es el nombre de la propiedad en el JSON
+      return res.send(datos.sort((a, b) => b.vistas - a.vistas))
+        }
+
+    if (req.query.ordenar === 'titulo'){  //  pregunta si existe un parámetro query que tuvo que haber sido escrito como "clasificar" u "ordenar" o la palabra que uno quiere.  Lo que está despues del ===  es el nombre de la propiedad en el JSON
+      console.log('entro por titulo')
+      return res.send(datos.sort((a, b) => a.titulo.localeCompare(b.titulo)));
+        }
+
+    if (req.query.ordenar === 'nivel'){  //  pregunta si existe un parámetro query que tuvo que haber sido escrito como "clasificar" u "ordenar" o la palabra que uno quiere.  Lo que está despues del ===  es el nombre de la propiedad en el JSON
+      return res.send(datos.sort((a, b) => a.nivel.localeCompare(b.nivel)))
         }
 
     return res.send(datos.sort())
